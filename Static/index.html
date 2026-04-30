@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dương Đình Hưng · Digital Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --white:   #FAFCFF;
+  --ink:     #1A2332;
+  --ink-mid: #4A5568;
+  --ink-dim: #94A3B8;
+  --blue:    #3B82F6;
+  --blue-p:  #DBEAFE;
+  --blue-m:  #BFDBFE;
+  --green:   #22C55E;
+  --green-p: #DCFCE7;
+  --green-m: #BBF7D0;
+  --teal:    #14B8A6;
+  --teal-p:  #CCFBF1;
+  --sky:     #E0F2FE;
+  --mint:    #F0FDF4;
+  --border:  rgba(26,35,50,0.08);
+  --serif:   'Instrument Serif', Georgia, serif;
+  --sans:    'Syne', sans-serif;
+}
+
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 56px;
+  transition: all 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(250,252,255,0.92);
+  backdrop-filter: blur(20px);
+  padding: 14px 56px;
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--serif); font-size: 17px; color: var(--ink);
+  text-decoration: none; display: flex; align-items: center; gap: 9px;
+}
+.nav-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--green));
+  animation: breathe 3s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(0.75); opacity: 0.6; }
+}
+.nav-links { display: flex; gap: 32px; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--ink-dim);
+  text-decoration: none; letter-spacing: 0.03em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--blue); }
+
+/* HERO */
+.hero {
+  position: relative; height: 100vh;
+  display: flex; align-items: flex-end;
+  overflow: hidden;
+}
+.hero-video-wrap {
+  position: absolute; inset: 0; z-index: 0;
+}
+.hero-video-wrap video {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.hero-fallback {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 70% at 65% 25%, #DBEAFE 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 20% 80%, #DCFCE7 0%, transparent 55%),
+    linear-gradient(160deg, #F0F9FF 0%, #F0FDF4 50%, #FAFCFF 100%);
+}
+.hero-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(250,252,255,0.1)  0%,
+    rgba(250,252,255,0)    25%,
+    rgba(250,252,255,0)    55%,
+    rgba(250,252,255,0.6)  78%,
+    rgba(250,252,255,1)    100%
+  );
+}
+.hero-bubble {
+  position: absolute; z-index: 2; border-radius: 50%; pointer-events: none;
+}
+.hero-content {
+  position: relative; z-index: 3;
+  width: 100%; padding: 0 56px 72px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 32px; align-items: flex-end;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 18px;
+  opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s;
+}
+.hero-tag::before { content:''; width:20px; height:1.5px; background: var(--blue); border-radius:1px; }
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(54px, 7.5vw, 108px);
+  line-height: 0.92; letter-spacing: -0.025em;
+  color: var(--ink); margin-bottom: 20px;
+  opacity: 0; animation: fadeUp 0.7s ease forwards 0.38s;
+}
+.hero-name em { font-style: italic; color: var(--blue); }
+.hero-desc {
+  font-size: 15px; line-height: 1.75; color: var(--ink-mid);
+  max-width: 440px;
+  opacity: 0; animation: fadeUp 0.7s ease forwards 0.56s;
+}
+.hero-right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 16px;
+  opacity: 0; animation: fadeUp 0.7s ease forwards 0.74s;
+}
+.hero-pills { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.pill {
+  font-size: 12px; font-weight: 500; padding: 6px 16px; border-radius: 100px;
+  border: 1.5px solid; white-space: nowrap;
+}
+.pill-blue  { background: var(--blue-p);  border-color: var(--blue-m);  color: #1D4ED8; }
+.pill-green { background: var(--green-p); border-color: var(--green-m); color: #15803D; }
+.pill-teal  { background: var(--teal-p);  border-color: #99F6E4;         color: #0F766E; }
+.hero-cta {
+  display: flex; gap: 10px; margin-top: 8px;
+  opacity: 0; animation: fadeUp 0.7s ease forwards 0.9s;
+}
+.btn-fill {
+  background: var(--ink); color: var(--white);
+  padding: 13px 28px; border-radius: 100px;
+  font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: 0.03em;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-fill:hover { background: var(--blue); transform: translateY(-2px); }
+.btn-outline {
+  background: transparent; color: var(--ink);
+  padding: 13px 28px; border-radius: 100px;
+  font-family: var(--sans); font-size: 13px; font-weight: 500;
+  text-decoration: none; border: 1.5px solid var(--border);
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-outline:hover { border-color: var(--blue); color: var(--blue); }
+.scroll-hint {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  opacity: 0; animation: fadeIn 1s ease forwards 1.3s;
+}
+.scroll-hint span { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
+.scroll-bar {
+  width: 1.5px; height: 44px;
+  background: linear-gradient(to bottom, var(--blue), transparent);
+  animation: scrollAnim 2s ease-in-out infinite;
+}
+@keyframes scrollAnim {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  49%  { transform: scaleY(1); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* REVEAL */
+.reveal, .reveal-left {
+  opacity: 0;
+  transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal      { transform: translateY(36px); }
+.reveal-left { transform: translateX(-36px); }
+.reveal.visible, .reveal-left.visible { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.08s; } .d2 { transition-delay: 0.18s; }
+.d3 { transition-delay: 0.28s; } .d4 { transition-delay: 0.38s; }
+
+/* MARQUEE */
+.marquee-strip {
+  overflow: hidden; padding: 14px 0;
+  background: var(--blue-p);
+  border-top: 1px solid var(--blue-m); border-bottom: 1px solid var(--blue-m);
+}
+.marquee-inner { display: flex; animation: marquee 22s linear infinite; white-space: nowrap; }
+.marquee-inner span { font-family: var(--serif); font-style: italic; font-size: 14px; color: #1D4ED8; padding: 0 36px; flex-shrink: 0; }
+.marquee-inner .dot { color: #93C5FD; padding: 0 4px; }
+@keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ABOUT */
+.about-section {
+  padding: 100px 56px; background: var(--white);
+  display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: center;
+}
+.eyebrow {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.eyebrow::before { content:''; width:20px; height:1.5px; background: var(--green); border-radius:1px; }
+.section-title { font-family: var(--serif); font-size: clamp(34px,4vw,52px); line-height: 1.08; color: var(--ink); }
+.section-title em { font-style: italic; color: var(--green); }
+.about-body { font-size: 15px; line-height: 1.85; color: var(--ink-mid); margin-bottom: 36px; }
+.about-body strong { color: var(--ink); font-weight: 600; }
+.stats-row { display: flex; gap: 40px; }
+.stat-num { font-family: var(--serif); font-style: italic; font-size: 40px; color: var(--blue); line-height: 1; }
+.stat-label { font-size: 11px; color: var(--ink-dim); margin-top: 4px; letter-spacing: 0.06em; }
+
+/* NOTES */
+.notes-section { padding: 100px 56px; background: var(--mint); }
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 44px; }
+.see-all { font-size: 12px; color: var(--ink-dim); text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s; }
+.see-all:hover { color: var(--blue); }
+.notes-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 16px; }
+.note-card {
+  background: var(--white); border-radius: 16px;
+  border: 1.5px solid var(--border); padding: 28px;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.note-card:hover { border-color: var(--blue-m); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(59,130,246,0.08); }
+.note-card.big { background: var(--sky); border-color: var(--blue-m); }
+.note-card.big:hover { border-color: var(--blue); }
+.note-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 100px; margin-bottom: 18px;
+}
+.badge-blue  { background: var(--blue-p);  color: #1D4ED8; }
+.badge-green { background: var(--green-p); color: #15803D; }
+.badge-teal  { background: var(--teal-p);  color: #0F766E; }
+.note-title { font-family: var(--serif); font-size: 19px; color: var(--ink); line-height: 1.3; margin-bottom: 10px; }
+.note-card.big .note-title { font-size: 24px; }
+.note-excerpt { font-size: 13px; color: var(--ink-mid); line-height: 1.65; margin-bottom: 20px; }
+.note-footer { display: flex; align-items: center; justify-content: space-between; }
+.note-date { font-size: 11px; color: var(--ink-dim); }
+.note-ripeness { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.rdot { width: 5px; height: 5px; border-radius: 50%; }
+
+/* PROJECTS */
+.projects-section { padding: 100px 56px; background: var(--white); }
+.projects-list { margin-top: 40px; border-top: 1.5px solid var(--border); }
+.project-row {
+  display: grid; grid-template-columns: 48px 1fr auto;
+  gap: 28px; align-items: center;
+  padding: 28px 0; border-bottom: 1.5px solid var(--border);
+  transition: padding-left 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.project-row:hover { padding-left: 10px; }
+.project-num { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-dim); }
+.project-name { font-family: var(--serif); font-size: 21px; color: var(--ink); margin-bottom: 5px; transition: color 0.2s; }
+.project-row:hover .project-name { color: var(--blue); }
+.project-desc { font-size: 13px; color: var(--ink-dim); }
+.project-right { display: flex; align-items: center; gap: 14px; }
+.status-badge { display: flex; align-items: center; gap: 6px; font-size: 11px; padding: 5px 12px; border-radius: 100px; border: 1.5px solid var(--border); }
+.sdot { width: 5px; height: 5px; border-radius: 50%; }
+.sdot-live { background: var(--green); box-shadow: 0 0 6px rgba(34,197,94,0.5); }
+.sdot-wip  { background: var(--blue); }
+.sarrow { font-size: 16px; color: var(--ink-dim); transition: color 0.2s, transform 0.3s; }
+.project-row:hover .sarrow { color: var(--blue); transform: translate(3px,-3px); }
+
+/* NOW */
+.now-section { padding: 100px 56px; background: var(--sky); }
+.now-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.now-sub { font-size: 14px; color: var(--ink-mid); line-height: 1.7; margin-top: 16px; }
+.now-updated { font-size: 11px; color: var(--ink-dim); letter-spacing: 0.07em; margin-top: 8px; }
+.now-cards { display: flex; flex-direction: column; gap: 10px; }
+.now-card {
+  background: var(--white); border-radius: 14px;
+  border: 1.5px solid var(--border); padding: 18px 20px;
+  display: flex; gap: 16px; align-items: center;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.now-card:hover { border-color: var(--blue-m); transform: translateX(4px); }
+.now-icon { width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+.ic-blue  { background: var(--blue-p); }
+.ic-green { background: var(--green-p); }
+.ic-teal  { background: var(--teal-p); }
+.ic-sky   { background: #E0F2FE; }
+.now-card-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.now-card-sub   { font-size: 12px; color: var(--ink-dim); line-height: 1.5; }
+
+/* FOOTER */
+footer { background: var(--ink); padding: 36px 56px; display: flex; align-items: center; justify-content: space-between; }
+.footer-quote { font-family: var(--serif); font-style: italic; font-size: 14px; color: rgba(255,255,255,0.3); }
+.footer-right { font-size: 12px; color: rgba(255,255,255,0.2); }
+
+/* KEYFRAMES */
+@keyframes fadeUp  { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+@keyframes floatA  { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-14px) scale(1.04)} }
+@keyframes floatB  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(10px)} }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="nav-dot"></div>
+    Hưng · Digital Garden
+  </a>
+  <div class="nav-links">
+    <a href="#about">Về tôi</a>
+    <a href="#notes">Ghi chú</a>
+    <a href="#projects">Dự án</a>
+    <a href="#now">Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-video-wrap">
+    <video id="heroVideo" autoplay muted loop playsinline>
+      <source src="Videos/hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-fallback"></div>
+  </div>
+
+  <div class="hero-bubble" style="width:320px;height:320px;top:8%;right:12%;background:rgba(219,234,254,0.35);animation:floatA 7s ease-in-out infinite;"></div>
+  <div class="hero-bubble" style="width:180px;height:180px;top:55%;right:32%;background:rgba(220,252,231,0.3);animation:floatB 5s ease-in-out infinite 1s;"></div>
+  <div class="hero-bubble" style="width:80px;height:80px;top:25%;left:18%;background:rgba(204,251,241,0.4);animation:floatA 6s ease-in-out infinite 2s;"></div>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-tag">Operations Excellence · AI Builder</div>
+      <h1 class="hero-name">Dương<br>Đình <em>Hưng</em></h1>
+      <p class="hero-desc">Tối ưu vận hành 150+ cửa hàng bằng dữ liệu và AI. Đây là khu vườn nơi tôi ghi lại hành trình — những điều đang học, đang build và đang khám phá.</p>
+      <div class="hero-cta">
+        <a href="#notes" class="btn-fill">Khám phá ghi chú →</a>
+        <a href="#about" class="btn-outline">Về tôi</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-pills">
+        <span class="pill pill-blue">AI & Automation</span>
+        <span class="pill pill-green">Retail Operations</span>
+        <span class="pill pill-teal">Learning in Public</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-bar"></div>
+    <span>Scroll</span>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>Digital Garden</span><span class="dot">·</span><span>Operations Excellence</span><span class="dot">·</span><span>AI Agent Builder</span><span class="dot">·</span><span>Retail Ops</span><span class="dot">·</span><span>Automation</span><span class="dot">·</span><span>Learning in Public</span><span class="dot">·</span><span>CellphoneS</span><span class="dot">·</span>
+    <span>Digital Garden</span><span class="dot">·</span><span>Operations Excellence</span><span class="dot">·</span><span>AI Agent Builder</span><span class="dot">·</span><span>Retail Ops</span><span class="dot">·</span><span>Automation</span><span class="dot">·</span><span>Learning in Public</span><span class="dot">·</span><span>CellphoneS</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="reveal-left">
+    <div class="eyebrow">Về tôi</div>
+    <h2 class="section-title">Ops meets<br><em>intelligence</em></h2>
+  </div>
+  <div class="reveal d2">
+    <p class="about-body">Tôi là <strong>chuyên viên Tối ưu Vận hành</strong> tại CellphoneS — cầu nối giữa bộ phận nội bộ và 150+ cửa hàng trên toàn quốc. Công việc của tôi là biến dữ liệu thành quyết định và biến quy trình thành hệ thống.<br><br>Từ 2022, tôi bắt đầu ứng dụng AI vào công việc ops. <strong>Không phải vì công nghệ ngầu, mà vì nó giải phóng thời gian cho tư duy.</strong></p>
+    <div class="stats-row">
+      <div><div class="stat-num">150+</div><div class="stat-label">cửa hàng</div></div>
+      <div><div class="stat-num">3+</div><div class="stat-label">năm Retail Ops</div></div>
+      <div><div class="stat-num">∞</div><div class="stat-label">đang học</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTES -->
+<section class="notes-section" id="notes">
+  <div class="section-header reveal">
+    <div>
+      <div class="eyebrow">Ghi chú gần đây</div>
+      <h2 class="section-title">Những gì đang<br>trong đầu tôi</h2>
+    </div>
+    <a href="#" class="see-all">Xem tất cả →</a>
+  </div>
+  <div class="notes-grid">
+    <div class="note-card big reveal d1">
+      <span class="note-badge badge-blue">AI & Automation</span>
+      <div class="note-title">Tự động hoá báo cáo tuần: từ 3 giờ xuống 10 phút</div>
+      <div class="note-excerpt">Cách tôi dùng n8n nối Google Sheets với Lark để KPI tự chạy mỗi thứ Hai sáng mà không cần làm tay...</div>
+      <div class="note-footer">
+        <span class="note-date">Tháng 4 · 2026</span>
+        <div class="note-ripeness"><span class="rdot" style="background:var(--blue)"></span><span style="color:var(--blue)">Đang nở</span></div>
+      </div>
+    </div>
+    <div class="note-card reveal d2">
+      <span class="note-badge badge-green">Học hỏi</span>
+      <div class="note-title">Prompt engineering cho người không biết code</div>
+      <div class="note-excerpt">Những mẫu prompt thực tế tôi dùng hàng ngày...</div>
+      <div class="note-footer">
+        <span class="note-date">Tháng 3 · 2026</span>
+        <div class="note-ripeness"><span class="rdot" style="background:#F59E0B"></span><span style="color:#F59E0B">Mới gieo</span></div>
+      </div>
+    </div>
+    <div class="note-card reveal d3">
+      <span class="note-badge badge-teal">Vận hành</span>
+      <div class="note-title">Bài học từ chuyến công tác Hà Nội</div>
+      <div class="note-excerpt">Sự khác biệt văn hoá làm việc giữa Nam và Bắc...</div>
+      <div class="note-footer">
+        <span class="note-date">Tháng 2 · 2026</span>
+        <div class="note-ripeness"><span class="rdot" style="background:var(--green)"></span><span style="color:var(--green)">Đang lớn</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section" id="projects">
+  <div class="eyebrow reveal">Dự án</div>
+  <h2 class="section-title reveal">Những thứ<br>tôi đang build</h2>
+  <div class="projects-list">
+    <div class="project-row reveal d1">
+      <div class="project-num">01</div>
+      <div><div class="project-name">AI Chatbot phân tích Power BI</div><div class="project-desc">Nhắn tin → bot tự kéo data → phân tích tự động. Tích hợp Lark.</div></div>
+      <div class="project-right"><div class="status-badge"><span class="sdot sdot-live"></span><span style="color:var(--green)">Đang chạy</span></div><span class="sarrow">↗</span></div>
+    </div>
+    <div class="project-row reveal d2">
+      <div class="project-num">02</div>
+      <div><div class="project-name">Bot tổng hợp thi đua tự động</div><div class="project-desc">Tự động xếp hạng + gửi thông báo thưởng/phạt hàng tháng.</div></div>
+      <div class="project-right"><div class="status-badge"><span class="sdot sdot-wip"></span><span style="color:var(--blue)">Đang build</span></div><span class="sarrow">↗</span></div>
+    </div>
+    <div class="project-row reveal d3">
+      <div class="project-num">03</div>
+      <div><div class="project-name">Digital Garden cá nhân</div><div class="project-desc">Website này — lưu trữ ký ức, ghi chú và hành trình phát triển.</div></div>
+      <div class="project-right"><div class="status-badge"><span class="sdot sdot-wip"></span><span style="color:var(--blue)">Đang build</span></div><span class="sarrow">↗</span></div>
+    </div>
+    <div class="project-row reveal d4">
+      <div class="project-num">04</div>
+      <div><div class="project-name">Chuẩn hoá thông báo nội bộ</div><div class="project-desc">Bộ template và quy trình ban hành thông báo từ HO xuống cửa hàng.</div></div>
+      <div class="project-right"><div class="status-badge"><span class="sdot sdot-live"></span><span style="color:var(--green)">Hoàn thành</span></div><span class="sarrow">↗</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- NOW -->
+<section class="now-section" id="now">
+  <div class="now-inner">
+    <div class="reveal-left">
+      <div class="eyebrow">Now</div>
+      <h2 class="section-title">Tôi đang<br><em>làm gì?</em></h2>
+      <p class="now-sub">Những thứ đang chiếm phần lớn thời gian và tâm trí của tôi lúc này.</p>
+      <div class="now-updated">Cập nhật · Tháng 4 / 2026</div>
+    </div>
+    <div class="now-cards reveal d2">
+      <div class="now-card"><div class="now-icon ic-green">🌱</div><div><div class="now-card-title">Build Digital Garden này</div><div class="now-card-sub">Học Quartz, GitHub Pages, viết nội dung đầu tiên</div></div></div>
+      <div class="now-card"><div class="now-icon ic-blue">🤖</div><div><div class="now-card-title">Mở rộng hệ thống AI Agent</div><div class="now-card-sub">Scale chatbot v1 → bot thi đua và tra cứu chỉ số</div></div></div>
+      <div class="now-card"><div class="now-icon ic-teal">📈</div><div><div class="now-card-title">Push chỉ số tải app CellphoneS</div><div class="now-card-sub">Theo dõi và follow 150+ cửa hàng mỗi tuần</div></div></div>
+      <div class="now-card"><div class="now-icon ic-sky">📚</div><div><div class="now-card-title">Học LLM & Prompt Engineering</div><div class="now-card-sub">Áp dụng thực tế vào công việc ops hàng ngày</div></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-quote">"A garden is never finished." — Unknown</div>
+  <div class="footer-right">Dương Đình Hưng · 2026</div>
+</footer>
+
+<script>
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal, .reveal-left').forEach(el => obs.observe(el));
+
+const vid = document.getElementById('heroVideo');
+if (vid) vid.addEventListener('error', () => { vid.style.display = 'none'; });
+</script>
+</body>
+</html>
